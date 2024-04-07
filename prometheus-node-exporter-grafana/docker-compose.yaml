@@ -1,11 +1,10 @@
-version: '3.8'
-
 networks:
   monitoring:
     driver: bridge
 
 volumes:
   prometheus_data: {}
+  grafana: {}
 
 services:
   node-exporter:
@@ -39,8 +38,8 @@ services:
       - '--web.console.libraries=/etc/prometheus/console_libraries'
       - '--web.console.templates=/etc/prometheus/consoles'
       - '--web.enable-lifecycle'
-    expose:
-      - 9090
+    ports:
+      - 9090:9090
     networks:
       - monitoring
 
@@ -56,4 +55,4 @@ services:
       - GF_SECURITY_ADMIN_USER=jiaqianjing
       - GF_SECURITY_ADMIN_PASSWORD=1234rewq
     volumes:
-      - ./grafana:/etc/grafana/provisioning/datasources
+      - grafana:/etc/grafana/provisioning/datasources
