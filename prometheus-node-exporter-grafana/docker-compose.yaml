@@ -20,8 +20,26 @@ services:
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
-    expose:
-      - 9100
+    ports:
+      - 9100:9100
+    networks:
+      - monitoring
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest # 使用指定的版本标签
+    container_name: cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk:/dev/disk:ro
+    ports:
+      - 8080:8080 # 将容器的8080端口映射到宿主机的8080端口
+    privileged: true
+    devices:
+      - "/dev/kmsg:/dev/kmsg"
+    restart: unless-stopped
     networks:
       - monitoring
 
