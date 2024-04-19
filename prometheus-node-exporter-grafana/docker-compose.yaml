@@ -80,7 +80,7 @@ services:
     image: grafana/grafana
     container_name: grafana
     ports:
-      - 8000:3000
+      - 3000:3000
     networks:
       - monitoring
     restart: unless-stopped
